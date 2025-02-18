@@ -13,7 +13,7 @@ module.exports = function (body) {
     //num2 = "7";
     //num3 = "7";
   
-    let slotSelection = `→ ${num1} ${num2} ${num3}`;
+    let slotSelection = `:red_square::white_large_square::red_square::white_large_square::red_square:\n:fast_forward:${num1} ${num2} ${num3}:blue_square:\n:red_square::white_large_square::red_square::white_large_square::red_square:`;
   
     // Get user's ID
     const userId = body.member.user.id;
