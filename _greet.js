@@ -1,26 +1,23 @@
-greetCommandHandler.js
+//testCommandHandler.js
 
 module.exports = function (body) {
   // Extract options from the interaction
-  const userOption = body.data.options.find((option) => option.name === 'user');
-  const messageOption = body.data.options.find((option) => option.name === 'message');
+  const gameOption = body.data.options.find((option) => option.name === 'game');
+  const randomGame = gameOption.value;
+  
+  //const eightBallResponses = randomGame.split(",");
+  //const greetingMessage = gameOption ? gameOption.value : 'xDDD.';
+  //const randomResponse = eightBallResponses[Math.floor(Math.random() * eightBallResponses.length)];
+  const randomResponse = "hello"
+  // Customize the response message based on the options
+  const responseMessage = `<@${body.member.user.id}> Asked: ${randomGame}\n**8Ball Answered:** ${randomResponse} `;
 
-  if (userOption) {
-    const targetUser = userOption.value;
-    const greetingMessage = messageOption ? messageOption.value : 'Your presence brightens the day.';
-
-    // Customize the response message based on the options
-    const responseMessage = `Greetings, <@${targetUser}>! ${greetingMessage}`;
-
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        type: 4,
-        data: { content: responseMessage },
-      }),
-    };
+  return {
+    statusCode: 200,
+    body: JSON.stringify({
+      type: 4,
+      data: { content: responseMessage },
+    }),
   }
 };
-
-
 

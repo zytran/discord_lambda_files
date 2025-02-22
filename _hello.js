@@ -3,10 +3,7 @@
 module.exports = function (body) {
   // Define an array of random hello messages with placeholders for user mentions
   const helloMessages = [
-    "Hello there, <@userid>!",
-    "Hi <@userid>, hope you are having a great day!",
-    "Hey <@userid>, good to see you!",
-    "Hiya <@userid>, thanks for being part of the community."
+    "Hello there, <@userid>, I'm Yoshingo Bot! This is a project created by <@453602286162149377>! Please Checkout my links [Here](https://solo.to/yoshingo)",
   ];
 
   // Get a random index from the helloMessages array
