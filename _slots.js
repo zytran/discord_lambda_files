@@ -6,6 +6,8 @@ const fileName = "money.json"; // S3 File Name
 
 module.exports = async (body) => {
   
+  const messageOption = body.data.options.find((option) => option.name === 'amount');
+
   const slotNumbers = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"]; 
 
   let num1 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
@@ -55,7 +57,51 @@ module.exports = async (body) => {
       }
 
       // Update user's balance
-      userMoney[userId] += 100;
+      userMoney[userId] += (10*Number(messageOption));
+
+      // Save updated money.json back to S3
+      await s3.putObject({
+        Bucket: bucketName,
+        Key: fileName,
+        Body: JSON.stringify(userMoney, null, 2),
+        ContentType: "application/json"
+      }).promise();
+
+      slotSelection += `\n💰 Your new balance: ${userMoney[userId]}`;
+      
+    } catch (err) {
+      console.error("Error updating money.json:", err);
+      slotSelection += "\n⚠️ *Error updating money record. Please try again later.*";
+    }
+  }
+  else {
+    try {
+      // Fetch existing money.json from S3
+      let userMoney = {};
+
+      try {
+        const data = await s3.getObject({
+          Bucket: bucketName,
+          Key: fileName
+        }).promise();
+        
+        userMoney = JSON.parse(data.Body.toString());
+      } catch (err) {
+        if (err.code === "NoSuchKey") {
+          console.log("money.json not found, creating a new one.");
+        } else {
+          console.error("Error fetching money.json:", err);
+          throw err;
+        }
+      }
+
+      // Initialize user balance if not already in the file
+      if (!userMoney[userId]) {
+        userMoney[userId] = 0;
+      }
+
+      // Update user's balance
+      userMoney[userId] -= 100;
 
       // Save updated money.json back to S3
       await s3.putObject({
@@ -73,7 +119,7 @@ module.exports = async (body) => {
     }
   }
 
-  slotSelection += "\n\n**This is a test command. Values are now stored in S3!**";
+  //slotSelection += "\n\n**This is a test command. Values are now stored in S3!**";
 
   // Return response to Discord
   return {
