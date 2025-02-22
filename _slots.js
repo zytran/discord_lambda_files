@@ -6,7 +6,8 @@ const fileName = "money.json"; // S3 File Name
 
 module.exports = async (body) => {
   
-  const messageOption = body.data.options.find((option) => option.name === 'amount');
+  let messageOption = body.data.options.find((option) => option.name === 'amount');
+  let gambleAmount = messageOption.value;
 
   const slotNumbers = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"]; 
 
@@ -24,7 +25,7 @@ module.exports = async (body) => {
     num2 = ":seven:";
     num3 = ":seven:";
   }
-
+  
   let slotSelection = `:red_square::white_large_square::red_square::white_large_square::red_square:\n:fast_forward:${num1}${num2}${num3}:blue_square:\n:red_square::white_large_square::red_square::white_large_square::red_square:`;
 
   // Check if user won
@@ -53,11 +54,13 @@ module.exports = async (body) => {
 
       // Initialize user balance if not already in the file
       if (!userMoney[userId]) {
-        userMoney[userId] = 0;
+        userMoney[userId] = 100;
       }
 
       // Update user's balance
-      userMoney[userId] += (10*Number(messageOption));
+      userMoney[userId] += 10* gambleAmount;
+
+      
 
       // Save updated money.json back to S3
       await s3.putObject({
@@ -97,11 +100,11 @@ module.exports = async (body) => {
 
       // Initialize user balance if not already in the file
       if (!userMoney[userId]) {
-        userMoney[userId] = 0;
+        userMoney[userId] = 100;
       }
 
       // Update user's balance
-      userMoney[userId] -= 100;
+      userMoney[userId] -= gambleAmount;
 
       // Save updated money.json back to S3
       await s3.putObject({

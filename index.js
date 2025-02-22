@@ -6,6 +6,7 @@ const mballCommandHandler = require('./_8ball'); // Import the mballCommandHandl
 const testCommandCommandHandler = require('./_testCommand'); // Import the testCommandHandler module
 const randomCommandHandler = require('./_random'); // Import the randomCommandhandler
 const slotsCommandHandler = require('./_slots'); // Import the slotCommandhandler module
+const addMoneyCommandHandler = require('./_addmoney');
 exports.handler = async (event, context, callback) => {
 // Checking signature (requirement 1.)
 // Your public key can be found on your application in the Developer Portal
@@ -64,6 +65,9 @@ exports.handler = async (event, context, callback) => {
 // Handle the /slots command using the slotCommand module
 if (body.data.name=="slots"){
   return slotsCommandHandler(body)
+}
+if (body.data.name=="addmoney"){
+  return addMoneyCommandHandler(body)
 }
 
 // END OF FILE
