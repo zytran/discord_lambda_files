@@ -7,6 +7,7 @@ const testCommandCommandHandler = require('./_testCommand'); // Import the testC
 const randomCommandHandler = require('./_random'); // Import the randomCommandhandler
 const slotsCommandHandler = require('./_slots'); // Import the slotCommandhandler module
 const addMoneyCommandHandler = require('./_addmoney');
+const checkBalanceCommandHandler = require('./_checkbalance');
 exports.handler = async (event, context, callback) => {
 // Checking signature (requirement 1.)
 // Your public key can be found on your application in the Developer Portal
@@ -68,6 +69,10 @@ if (body.data.name=="slots"){
 }
 if (body.data.name=="addmoney"){
   return addMoneyCommandHandler(body)
+}
+
+if (body.data.name =="checkbalance"){
+  return checkBalanceCommandHandler(body)
 }
 
 // END OF FILE

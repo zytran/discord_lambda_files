@@ -14,7 +14,11 @@ module.exports = async (body) => {
   let num1 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
   let num2 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
   let num3 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
+  let num4 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
+  let num5 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
 
+
+  
   const multiple_chance = Math.floor(Math.random()*6);
 
 
