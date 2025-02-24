@@ -10,10 +10,19 @@ module.exports = async (body) => {
   let gambleAmount = messageOption.value;
 
   const slotNumbers = [":one:", ":two:", ":three:", ":four:", ":five:", ":six:", ":seven:", ":eight:", ":nine:"]; 
-
+  
   let num1 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
   let num2 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
   let num3 = slotNumbers[Math.floor(Math.random() * slotNumbers.length)];
+
+  const multiple_chance = Math.floor(Math.random()*6);
+
+
+  let mult = 1
+  if (multiple_chance===3){
+    mult = Math.floor(Math.random()*500)/100
+  }
+  
 
   // Get the user ID
   const userId = body.member.user.id;
@@ -51,15 +60,22 @@ module.exports = async (body) => {
           throw err;
         }
       }
-
+      
       // Initialize user balance if not already in the file
       if (!userMoney[userId]) {
-        userMoney[userId] = 100;
+        userMoney[userId] = 0;
       }
 
+      if (userMoney[userId]<gambleAmount){
+        slotSelection = `<@${userId}> only has $${userMoney[userId]}\nYou can only gamble what you have!`;
+      }
+      else{
       // Update user's balance
-      userMoney[userId] += 10* gambleAmount;
+      userMoney[userId] += (10* gambleAmount)*mult;
 
+      if(mult>1){
+        slotSelection += `\n### ${mult}x multiplier hit!`
+      }
       
 
       // Save updated money.json back to S3
@@ -72,7 +88,7 @@ module.exports = async (body) => {
 
       slotSelection += `\n💰 Your new balance: ${userMoney[userId]}`;
       
-    } catch (err) {
+    }} catch (err) {
       console.error("Error updating money.json:", err);
       slotSelection += "\n⚠️ *Error updating money record. Please try again later.*";
     }
@@ -100,9 +116,14 @@ module.exports = async (body) => {
 
       // Initialize user balance if not already in the file
       if (!userMoney[userId]) {
-        userMoney[userId] = 100;
+        userMoney[userId] = 0;
       }
+      if (userMoney[userId]<gambleAmount){
+        slotSelection = `<@${userId}> only has $${userMoney[userId]}\nYou can only gamble what you have!`;
+      }
+      else{
 
+      
       // Update user's balance
       userMoney[userId] -= gambleAmount;
 
@@ -116,13 +137,13 @@ module.exports = async (body) => {
 
       slotSelection += `\n💰 Your new balance: ${userMoney[userId]}`;
       
-    } catch (err) {
+    }} catch (err) {
       console.error("Error updating money.json:", err);
       slotSelection += "\n⚠️ *Error updating money record. Please try again later.*";
     }
   }
 
-  //slotSelection += "\n\n**This is a test command. Values are now stored in S3!**";
+  
 
   // Return response to Discord
   return {
