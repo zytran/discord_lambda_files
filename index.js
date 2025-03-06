@@ -8,6 +8,7 @@ const randomCommandHandler = require('./_random'); // Import the randomCommandha
 const slotsCommandHandler = require('./_slots'); // Import the slotCommandhandler module
 const addMoneyCommandHandler = require('./_addmoney');
 const checkBalanceCommandHandler = require('./_checkbalance');
+const rollCommandHandler = require('./_roll');
 exports.handler = async (event, context, callback) => {
 // Checking signature (requirement 1.)
 // Your public key can be found on your application in the Developer Portal
@@ -73,6 +74,10 @@ if (body.data.name=="addmoney"){
 
 if (body.data.name =="checkbalance"){
   return checkBalanceCommandHandler(body)
+}
+
+if (body.data.name == "roll"){
+  return rollCommandHandler(body)
 }
 
 // END OF FILE
