@@ -88,6 +88,7 @@ module.exports = async (body) => {
             if (bonusOption) {
                 userRolls += `\n> Bonus: **${bonusOption.value}**`;
             }
+            userRolls += `\n> ### Total: **${total}**`;
         }
 
         
