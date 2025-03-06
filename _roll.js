@@ -28,7 +28,7 @@ module.exports = async (body) => {
     let nat20 = false
 
     for (i = 1; i<amount+1;i++){
-        let rolledAmount = Math.floor(Math.random()*dice[rolledDice]);
+        let rolledAmount = Math.floor(Math.random()*dice[rolledDice])+1;
         total += rolledAmount
         userRolls+=`\n> Roll ${i}: **${rolledAmount}**`
     }
