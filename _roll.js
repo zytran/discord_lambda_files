@@ -71,11 +71,11 @@ module.exports = async (body) => {
             }
             else if(nat20 && total ==20){
                 userRolls += `\n> ### Total: **${total}**`;
-                userRolls+="\n## [Critical Success](https://tenor.com/view/nat-20-baldur's-gate-baldur's-gate-3-critical-sucess-gif-14789122616741343796)";
+                userRolls+="\n## [Critical Success!](https://tenor.com/view/nat-20-baldur's-gate-baldur's-gate-3-critical-sucess-gif-14789122616741343796)";
             }
             else if (nat1 &&total==1){
                 userRolls += `\n> ### Total: **${total}**`;
-                userRolls+="\n## [Critical Failure](https://tenor.com/view/baldur's-gate-3-critical-fail-critical-failure-%C3%A9chec-%C3%A9chec-critique-gif-15074420353830990571)"
+                userRolls+="\n## [Critical Failure!](https://tenor.com/view/baldur's-gate-3-critical-fail-critical-failure-%C3%A9chec-%C3%A9chec-critique-gif-15074420353830990571)"
             }
         
         } else {
