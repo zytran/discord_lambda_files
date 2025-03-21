@@ -2,6 +2,7 @@ const {EmbedBuilder} = require('discord.js')
 module.exports = async(body)=>{
   const fetch = (await import('node-fetch')).default;
   const randomPokemon = Math.floor(Math.random()*1025)+1;
+  const pokemonLevel = Math.floor(Math.random()*100)+1;
   const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${randomPokemon}/`);
   const data = await response.json();
  
@@ -35,11 +36,13 @@ module.exports = async(body)=>{
     .setColor(pokemonColors[color] || "0x000000")
     .setTitle(`A Wild ${pokemonName} Appeared`) 
     .setURL(`https://www.pokemon.com/us/pokedex/${pokemonName.toLowerCase()}/`)
-    .setAuthor({name: "Yoshingo",iconURL: 'https://i.imgur.com/IlcxbcC.jpeg'})
+    .setAuthor({name: `${pokemonName}` ,iconURL: 'https://i.imgur.com/IlcxbcC.jpeg'})
     .addFields(
-        {name: "Type", value: types},
-        {name: "Level", value:"100"}
+        
+        {name: "Type", value: types, inline:true},
+        {name: "Level", value:pokemonLevel,inline:true}
     )
+    .addFields({name: "Pokedex Entry",value: `[Link](https://www.pokemon.com/us/pokedex/${pokemonName.toLowerCase()}/)`})
     .setImage('https://i.imgur.com/IlcxbcC.jpeg')
     .setTimestamp()
     .setFooter({text:"Developed by @Yoshingo", iconURL: 'https://i.imgur.com/IlcxbcC.jpeg'})
@@ -52,6 +55,7 @@ return {
     body: JSON.stringify({
         type: 4,
         data: {
+            content: `# <@${userId}>`,
             embeds:[embedJson],
         },
     }),
