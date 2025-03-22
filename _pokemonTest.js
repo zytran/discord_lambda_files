@@ -2,9 +2,9 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = async (body) => {
     const fetch = (await import('node-fetch')).default;
-    const randomPokemon = Math.floor(Math.random() * 1025) + 1;
+    let randomPokemon = Math.floor(Math.random() * 1025) + 1;
     const pokemonLevel = Math.floor(Math.random() * 100) + 1;
-
+    randomPokemon = 778;
     // Fetch Pokémon data
     let data;
     try {
@@ -58,11 +58,11 @@ module.exports = async (body) => {
 
     const pokeEmbed = new EmbedBuilder()
         .setColor(pokemonColors[color] || 0x000000) 
-        .setTitle(`A Wild ${pokemonName} Appeared`)
-        .setURL(`https://www.pokemon.com/us/pokedex/${formattedPokemonName}/`)
+        .setTitle(`A Wild ${pokemonName} Appeared!`)
+        .setURL(`https://www.pokemon.com/us/pokedex/${speciesData.name}/`)
         .setAuthor({
             name: `${pokemonName}`,
-            iconURL: `https://img.pokemondb.net/artwork/${formattedPokemonName}.jpg`
+            iconURL: `https://img.pokemondb.net/artwork/${speciesData.name}.jpg`
         })
         .setThumbnail('https://i.imgur.com/olQInPy.png')
         .addFields(
@@ -73,11 +73,12 @@ module.exports = async (body) => {
             name: " ", value: " "
         })
         .addFields(
-            {name: "Pokedex Entry", value: `[Link](https://www.pokemon.com/us/pokedex/${formattedPokemonName}/)`,inline:true},
-            {name:"Ability", value: randomAbility.charAt(0).toUpperCase()+randomAbility.slice(1), inline:true},
+            {name: "Pokedex Entry", value: `[Link](https://www.pokemon.com/us/pokedex/${speciesData.name}/)`,inline:true},
+            {name:"Ability", value: `[${randomAbility.charAt(0).toUpperCase()+randomAbility.slice(1)}](https://pokemondb.net/ability/${randomAbility})`, inline:true},
+            
 
         )
-        .setImage(`https://img.pokemondb.net/artwork/${formattedPokemonName}.jpg`)
+        .setImage(`https://img.pokemondb.net/artwork/${speciesData.name}.jpg`)
         .setTimestamp()
         .setFooter({
             text: "Developed by @Yoshingo",
