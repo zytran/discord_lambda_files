@@ -1,4 +1,9 @@
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');
+const AWS = require("aws-sdk");
+const s3 = new AWS.S3();
+
+const bucketName = "useramounts";
+const filename = "currentPokemon.json";
 
 module.exports = async (body) => {
     const fetch = (await import('node-fetch')).default;
@@ -92,7 +97,19 @@ module.exports = async (body) => {
         });
 
     const embedJson = pokeEmbed.toJSON();
+    
+    const catchButton = new ButtonBuilder()
+        .setCustomId("catch_action")
+        .setLabel("Catch")
+        .setStyle(ButtonStyle.Success);
+    const runAwayButton = new ButtonBuilder()
+        .setCustomId("runaway_action")
+        .setLabel("Run Away")
+        .setStyle(ButtonStyle.Danger);
 
+    const row = new ActionRowBuilder().addComponents(catchButton,runAwayButton);
+
+    const rowJson = row.toJSON();
     return {
         statusCode: 200,
         headers: { "Content-Type": "application/json" }, 
@@ -101,6 +118,7 @@ module.exports = async (body) => {
             data: {
                 content: `# <@${userId}>`,
                 embeds: [embedJson],
+                components:[rowJson], 
             },
         }),
     };

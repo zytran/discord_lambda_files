@@ -1,33 +1,30 @@
 //This one is for editing the original message
 
-module.exports = async (event) => {
+module.exports = async (body) => {
     try {
-        if (!event.body) {
-            throw new Error("event.body is undefined");
-        }
-
-        const body = JSON.parse(event.body);
+        
         const customId = body.data.custom_id;
         const messageId = body.message.id; // Original message ID
-
+        const userID = body.member.user.id;
+  
         if (!customId) {
             return {
                 statusCode: 400,
                 body: JSON.stringify({ error: "Invalid button interaction" }),
             };
         }
-
+  
         let responseMessage;
-
+  
         // Handle the button actions
-        if (customId === 'confirm_action') {
-            responseMessage = "✅ Action confirmed!";
-        } else if (customId === 'cancel_action') {
-            responseMessage = "❌ Action canceled!";
+        if (customId === 'catch_action') {
+            responseMessage = `#  <@${userID}> Caught the Pokemon!`;
+        } else if (customId === 'runaway_action') {
+            responseMessage = `${messageId} # Pokemon ran Away!`;
         } else {
             responseMessage = "Unknown action.";
         }
-
+  
         // Create disabled buttons
         const updatedButtons = {
             type: 1, // ActionRow
@@ -36,7 +33,7 @@ module.exports = async (event) => {
                 disabled: true // Disable the button
             }))
         };
-
+  
         // Send the response and disable the buttons
         return {
             statusCode: 200,
@@ -48,13 +45,14 @@ module.exports = async (event) => {
                 }
             }),
         };
-
+  
     } catch (error) {
         console.error("Error handling button interaction:", error);
-
+  
         return {
             statusCode: 500,
             body: JSON.stringify({ error: "Internal Server Error", message: error.message }),
         };
     }
-};
+  };
+  
