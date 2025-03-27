@@ -17,11 +17,19 @@ module.exports = async (body) => {
         let responseMessage;
   
         // Handle the button actions
-        if (customId === 'catch_action') {
+        if (customId === 'default_pokeball') {
             responseMessage = `#  <@${userID}> Caught the Pokemon!`;
-        } else if (customId === 'runaway_action') {
+        } else if (customId === 'great_ball') {
             responseMessage = `${messageId} # Pokemon ran Away!`;
-        } else {
+        
+        }
+        else if(customId === "ultra_ball"){
+            responseMessage ===" ultra ball";
+        }
+        else if (customId==="master_ball"){
+            responseMessage === "master ball"
+        }
+        else {
             responseMessage = "Unknown action.";
         }
   

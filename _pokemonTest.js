@@ -98,16 +98,25 @@ module.exports = async (body) => {
 
     const embedJson = pokeEmbed.toJSON();
     
-    const catchButton = new ButtonBuilder()
-        .setCustomId("catch_action")
-        .setLabel("Catch")
-        .setStyle(ButtonStyle.Success);
-    const runAwayButton = new ButtonBuilder()
-        .setCustomId("runaway_action")
-        .setLabel("Run Away")
+    const defaultPokeball = new ButtonBuilder()
+        .setCustomId("default_pokeball")
+        .setLabel("Poké Ball")
         .setStyle(ButtonStyle.Danger);
+    const greatBall = new ButtonBuilder()
+        .setCustomId("great_ball")
+        .setLabel("Great Ball")
+        .setStyle(ButtonStyle.Primary);
+    const ultraBall = new ButtonBuilder()
+        .setCustomId("ultra_ball")
+        .setLabel("Ultra Ball")
+        .setStyle(ButtonStyle.Secondary);
+    const masterBall = new ButtonBuilder()
+        .setCustomId('master_ball')
+        .setLabel("Master Ball")
+        .setStyle(ButtonStyle.Success);
+    
 
-    const row = new ActionRowBuilder().addComponents(catchButton,runAwayButton);
+    const row = new ActionRowBuilder().addComponents(defaultPokeball,greatBall,ultraBall,masterBall);
 
     const rowJson = row.toJSON();
     return {
