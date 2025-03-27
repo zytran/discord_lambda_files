@@ -10,6 +10,8 @@ module.exports = async (body) => {
     let randomPokemon = Math.floor(Math.random() * 1025) + 1;
     const pokemonLevel = Math.floor(Math.random() * 100) + 1;
     
+
+    const pokeID = Date.now()+Math.floor(Math.random()*10000) + randomPokemon;
     // Fetch Pokémon data
     let data;
     try {
@@ -67,6 +69,26 @@ module.exports = async (body) => {
         "yellow": 0xF9D030
     };
 
+    const pokemonData = {
+        id:randomPokemon,
+        name:pokemonName,
+        level: pokemonLevel,
+        type: types,
+        ability: formattedAbility,
+        img: `https://img.pokemondb.net/artwork/${formattedPokemonName}.jpg`,
+        encounter: pokeID
+    }; 
+
+    let passedData = {};
+    passedData[pokeID] = pokemonData;
+
+    await s3.putObject({
+        Bucket: bucketName,
+        Key:filename,
+        Body: JSON.stringify(passedData,null,2),
+        ContentType:"application/json"
+    }).promise();
+
     const pokeEmbed = new EmbedBuilder()
         .setColor(pokemonColors[color] || 0x000000) 
         .setTitle(`A Wild ${pokemonName} Appeared!`)
@@ -92,8 +114,7 @@ module.exports = async (body) => {
         .setImage(`https://img.pokemondb.net/artwork/${speciesData.name}.jpg`)
         .setTimestamp()
         .setFooter({
-            text: "Developed by @Yoshingo",
-            iconURL: 'https://i.imgur.com/IlcxbcC.jpeg'
+            text: `PokeID:${pokeID}`
         });
 
     const embedJson = pokeEmbed.toJSON();
