@@ -17,12 +17,12 @@ module.exports = async (body) => {
             };
         }
 
-        // Safely check if embeds exist
+        
         const embeds = body.message.embeds || [];
         const footerText = (embeds.length > 0 && embeds[0]?.footer?.text) ? embeds[0].footer.text : "";
 
-        // Attempt to match the encounter ID
-        const encounterMatch = footerText.match(/PokeID: ([\w\d_-]+)/);
+        
+        const encounterMatch = footerText.match(/PokeID:([\w\d_-]+)/);
 
         if (!encounterMatch) {
             console.error("Encounter ID not found in the message footer.");
@@ -49,7 +49,7 @@ module.exports = async (body) => {
             };
         }
 
-        const { name: pokemonName } = pokemonData; // Fix capitalization here
+        const { name: pokemonName } = pokemonData; 
 
         let responseMessage;
         if (customId === 'default_pokeball') {
@@ -64,7 +64,6 @@ module.exports = async (body) => {
             responseMessage = "Unknown action.";
         }
 
-        // Create disabled buttons
         const updatedButtons = {
             type: 1,
             components: body.message.components[0].components.map(button => ({
@@ -73,7 +72,6 @@ module.exports = async (body) => {
             }))
         };
 
-        // Send the response and disable the buttons
         return {
             statusCode: 200,
             body: JSON.stringify({

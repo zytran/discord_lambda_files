@@ -80,12 +80,31 @@ module.exports = async (body) => {
     }; 
 
     let passedData = {};
-    passedData[pokeID] = pokemonData;
+
+    try {
+        // Fetch the existing JSON data
+        const s3Response = await s3.getObject(
+            { Bucket: bucketName, 
+            Key: filename }).promise();
+        allPokemonData = JSON.parse(s3Response.Body.toString());
+    } catch (error) {
+        if (error.code === "NoSuchKey") {
+            console.log("No existing file found, creating a new one.");
+        } else {
+            console.error("Error fetching Pokémon data from S3:", error);
+            return {
+                statusCode: 500,
+                body: JSON.stringify({ error: "Failed to retrieve Pokémon data" }),
+            };
+        }
+    }
+
+    allPokemonData[pokeID] = pokemonData;
 
     await s3.putObject({
         Bucket: bucketName,
         Key:filename,
-        Body: JSON.stringify(passedData,null,2),
+        Body: JSON.stringify(allPokemonData,null,2),
         ContentType:"application/json"
     }).promise();
 
