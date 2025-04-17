@@ -51,11 +51,20 @@ module.exports = async (body) => {
 
         const { name: pokemonName } = pokemonData; 
 
+        const chanceHandler={
+            'default_pokeball': 15,
+            'great_ball':30,
+            'ultra_ball':65,
+            'master_ball':100 
+
+        }
+
+
         let responseMessage;
         if (customId === 'default_pokeball') {
             responseMessage = `# <@${userID}> Caught ${pokemonName}!`;
         } else if (customId === 'great_ball') {
-            responseMessage = `# <@${userID}> The Pokémon ran away!`;
+            responseMessage = `# <@${userID}> used a **Great Ball** on ${pokemonName}`;
         } else if (customId === "ultra_ball") {
             responseMessage = `# <@${userID}> used an **Ultra Ball** on ${pokemonName}!`;
         } else if (customId === "master_ball") {
