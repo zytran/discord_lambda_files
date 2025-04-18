@@ -75,6 +75,23 @@ module.exports = async (body) => {
                         {name:`$<@${userId}>'s Total`, value:userMoney[userId],inline:true},
                         {name:`Purchased Total`,value:`${prices[pokeball]*amount}`}
                     );   
+            } else {
+                userMoney[userId]-=(prices[pokeball]*amount)
+                try{
+                    const s3Response = await s3.getObject(
+                        { Bucket: bucketName,
+                            Key:userBallsFile
+                        }).promise();
+                        allUserData = JSON.parse(s3Response.Body.toString());
+                    }catch (error){
+                        console.log(`Error: ${error}`);
+                    }
+                    if (!allUserData[userId]){
+                        allUserData[userId] = {'pb':0,'gb':0,'ub':0,'mb':0};
+                    }
+                }
+            } catch(error){
+                console.log(`Error: ${error}`);
             }
 
 

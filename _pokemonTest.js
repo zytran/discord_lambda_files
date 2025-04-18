@@ -79,7 +79,7 @@ module.exports = async (body) => {
         encounter: pokeID
     }; 
 
-    let passedData = {};
+    
 
     try {
         // Fetch the existing JSON data
