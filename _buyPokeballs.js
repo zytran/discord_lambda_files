@@ -5,7 +5,7 @@ const s3 = new AWS.S3();
 
 const bucketName = "useramounts";
 const moneyFile = "money.json";
-const userBallsFile ='userPokeballs.json' // lol
+const userBallsFile ='userPokeballs.json' 
 
 module.exports = async (body) => {
     let pokeBallsOption = body.data.options.find((option) => option.name === "pokeballs");
@@ -41,6 +41,15 @@ module.exports = async (body) => {
                         {name:`$<@${userId}>'s Total`, value:userMoney[userId],inline:true},
                         {name:`Purchased Total`,value:`${prices[pokeball]*amount}`}
                     );   
+                    return {
+                        statusCode: 200,
+                        headers: {'Content-Type': 'applitcation/json'},
+                        body: JSON.stringify({
+                            type: 4,
+                            content: `# <@${userId}>`,
+                            embeds: [failedEmbed]
+                        })
+                    };
     }
     try{
         let userMoney = {};
