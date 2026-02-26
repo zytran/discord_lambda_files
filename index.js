@@ -1,7 +1,6 @@
 const nacl = require('tweetnacl');
 const handleButtonClick = require('./_handleButtonClick');
 
-// Import command handlers dynamically
 const commandHandlers = {
   hello: require('./_hello'),
   greet: require('./_greet'),
@@ -11,7 +10,10 @@ const commandHandlers = {
   slots: require('./_slots'),
   addmoney: require('./_addmoney'),
   checkbalance: require('./_checkbalance'),
-  roll: require('./_roll')
+  roll: require('./_roll'),
+  summonpokemon: require('./_pokemonTest'),
+  dndon: require('./_dndnames.'),
+  dndoff: require('./dndoff')
 };
 
 
@@ -42,23 +44,20 @@ exports.handler = async (event) => {
 
     const body = JSON.parse(strBody);
 
-    // 🔹 Discord Ping Test
+    
     if (body.type === 1) {
       return { statusCode: 200, body: JSON.stringify({ type: 1 }) };
     }
 
-    // 🔹 Handle Button Interactions (Type 3)
     if (body.type === 3) {
       return handleButtonClick(event);
     }
 
-    // 🔹 Handle Slash Commands
     const commandName = body.data.name;
     if (commandHandlers[commandName]) {
       return commandHandlers[commandName](body);
     }
 
-    // 🔹 Default response for unrecognized commands
     return { statusCode: 404, body: JSON.stringify('Not Found') };
 
   } catch (error) {
